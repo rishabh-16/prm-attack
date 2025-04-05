@@ -26,10 +26,10 @@ def prepare_input(problem: str, steps: list[str], tokenizer: PreTrainedTokenizer
 
     ## Calculate token masks
     step_sep_id = tokenizer.encode(STEP_SEP_TOKEN, add_special_tokens=False)[0]
-    token_masks = (np.array(input_ids) == step_sep_id)
+    token_mask = (np.array(input_ids) == step_sep_id)
 
-    token_masks = torch.from_numpy(token_masks)
-    return input_ids, token_masks
+    token_mask = torch.from_numpy(token_mask[0])
+    return input_ids, token_mask
 
 def derive_step_rewards(logits: torch.Tensor, token_masks: torch.Tensor, tokenizer: PreTrainedTokenizerBase):
     """

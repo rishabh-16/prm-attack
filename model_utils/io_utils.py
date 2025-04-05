@@ -6,10 +6,18 @@ def prepare_input(model_name: str,
                   problem: str, 
                   steps: list[str], 
                   tokenizer: PreTrainedTokenizerBase,
+                  convert_to_list = False,
                   device="cuda"):
     prepare_input_fn = PREPARE_INPUT_MAP[model_name]
     input_ids, token_masks = prepare_input_fn(problem, steps, tokenizer)
-    return input_ids.to(device), token_masks.to(device)
+    input_ids = input_ids[0]
+    if convert_to_list:
+        input_ids = input_ids.cpu().tolist()
+        token_masks = token_masks.cpu().tolist()
+    else:
+        input_ids = input_ids.to(device)
+        token_masks = token_masks.to(device)
+    return input_ids, token_masks
 
 def derive_step_rewards(model_name: str, logits: torch.Tensor, token_masks: torch.Tensor, tokenizer: PreTrainedTokenizerBase):
     derive_step_rewards_fn = DERIVE_STEP_REWARDS_MAP[model_name]
@@ -19,20 +27,15 @@ def derive_step_rewards_vllm(model_name, logits, token_masks, tokenizer):
     derive_step_rewards_fn = DERIVE_STEP_REWARDS_VLLM_MAP[model_name]
     return derive_step_rewards_fn(logits, token_masks, tokenizer)
 
-def prepare_batch_input_for_model(input_ids, reward_flags, pad_token_id):
+def prepare_batch_input_for_model(input_ids, token_masks, pad_token_id=0):
     padded_input_ids = torch.nn.utils.rnn.pad_sequence(
         [torch.LongTensor(ids) for ids in input_ids], 
         batch_first=True,
         padding_value=pad_token_id
     )
-    padded_attention_mask = torch.nn.utils.rnn.pad_sequence(
-        [torch.LongTensor([1] * len(ids)) for ids in input_ids], 
+    padded_token_masks = torch.nn.utils.rnn.pad_sequence(
+        [torch.LongTensor(token_mask) for token_mask in token_masks], 
         batch_first=True,
         padding_value=0
     )
-    padded_reward_flags = torch.nn.utils.rnn.pad_sequence(
-        [torch.LongTensor(reward_flag) for reward_flag in reward_flags], 
-        batch_first=True,
-        padding_value=0
-    )
-    return padded_input_ids, padded_attention_mask, padded_reward_flags
+    return padded_input_ids, padded_token_masks
