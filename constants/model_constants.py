@@ -10,7 +10,6 @@ Math_Shepherd_Mistral_7B_PRM = "peiyi9979/math-shepherd-mistral-7b-prm"
 
 Skywork_o1_Open_PRM_Qwen_2_5_7B = "Skywork/Skywork-o1-Open-PRM-Qwen-2.5-7B"
 Skywork_o1_Open_PRM_Qwen_2_5_1_5B = "Skywork/Skywork-o1-Open-PRM-Qwen-2.5-1.5B"
-Skywork_o1_Open_PRM_Llama3_1_8B = "Skywork/Skywork-o1-Open-Llama-3.1-8B"
 
 Llama3_1_8B_PRM_Mistral_Data = "RLHFlow/Llama3.1-8B-PRM-Mistral-Data"
 Llama3_1_8B_PRM_Deepseek_Data = "RLHFlow/Llama3.1-8B-PRM-Deepseek-Data"
@@ -22,7 +21,6 @@ PREPARE_INPUT_MAP = {
 
     Skywork_o1_Open_PRM_Qwen_2_5_7B: skywork_o1_open_prm.prepare_input,
     Skywork_o1_Open_PRM_Qwen_2_5_1_5B: skywork_o1_open_prm.prepare_input,
-    Skywork_o1_Open_PRM_Llama3_1_8B: skywork_o1_open_prm.prepare_input,
     
     Llama3_1_8B_PRM_Mistral_Data: rlhflow_math_prm.prepare_input,
     Llama3_1_8B_PRM_Deepseek_Data: rlhflow_math_prm.prepare_input,
@@ -35,21 +33,26 @@ DERIVE_STEP_REWARDS_MAP = {
 
     Skywork_o1_Open_PRM_Qwen_2_5_7B: skywork_o1_open_prm.derive_step_rewards,
     Skywork_o1_Open_PRM_Qwen_2_5_1_5B: skywork_o1_open_prm.derive_step_rewards,
-    Skywork_o1_Open_PRM_Llama3_1_8B: skywork_o1_open_prm.prepare_input,
     
     Llama3_1_8B_PRM_Mistral_Data: rlhflow_math_prm.derive_step_rewards,
     Llama3_1_8B_PRM_Deepseek_Data: rlhflow_math_prm.derive_step_rewards,
 }
 
-MODEL_CLASS_MAP = {
-    Math_Shepherd_Mistral_7B_PRM: AutoModelForCausalLM,
+DERIVE_STEP_REWARDS_VLLM_MAP = {
+    Qwen2_5_Math_PRM_7B: qwen_math_prm.derive_step_rewards_vllm,
+    
+    Skywork_o1_Open_PRM_Qwen_2_5_7B: skywork_o1_open_prm.derive_step_rewards_vllm,
+    Skywork_o1_Open_PRM_Qwen_2_5_1_5B: skywork_o1_open_prm.derive_step_rewards_vllm,
+}
 
+MODEL_CLASS_MAP = {
     Qwen2_5_Math_PRM_7B: Qwen2ForProcessRewardModel,
+
+    Math_Shepherd_Mistral_7B_PRM: AutoModelForCausalLM,
 
     Skywork_o1_Open_PRM_Qwen_2_5_7B: SkyworkO1OpenPRMForProcessRewardModel,
     Skywork_o1_Open_PRM_Qwen_2_5_1_5B: SkyworkO1OpenPRMForProcessRewardModel,
-    Skywork_o1_Open_PRM_Llama3_1_8B: skywork_o1_open_prm.prepare_input,
-    
+
     Llama3_1_8B_PRM_Mistral_Data: AutoModelForCausalLM,
     Llama3_1_8B_PRM_Deepseek_Data: AutoModelForCausalLM
 }

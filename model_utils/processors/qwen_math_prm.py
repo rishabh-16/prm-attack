@@ -47,3 +47,11 @@ def derive_step_rewards(logits: torch.Tensor, token_masks: torch.Tensor, tokeniz
         non_zero_elements_list = positive_probs.cpu().tolist()
         all_scores_res.append(non_zero_elements_list)
     return all_scores_res
+
+def derive_step_rewards_vllm(logits, token_masks, tokenizer):
+    batch_size = len(logits.data)
+    
+    res = []
+    for idx in range(batch_size):
+        res.append(np.array(logits.data[idx].embedding).reshape(-1, 2)[:, -1].tolist())
+    return res

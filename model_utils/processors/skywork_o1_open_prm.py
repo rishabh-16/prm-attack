@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+from scipy.special import expit
 import torch.nn.functional as F
 from transformers import PreTrainedTokenizerBase
 
@@ -43,8 +44,18 @@ def derive_step_rewards(logits: torch.Tensor, token_masks: torch.Tensor, tokeniz
 
     all_scores_res = []
     for i in range(batch_size):
-        sample = probabilities[i] # seq_len, 1
+        sample = probabilities[i]
         positive_probs = sample[sample != 0].view(-1)
         non_zero_elements_list = positive_probs.cpu().tolist()
         all_scores_res.append(non_zero_elements_list)
     return all_scores_res
+
+def derive_step_rewards_vllm(logits, token_masks, tokenizer):
+    batch_size = len(logits.data)
+    res = []
+    for idx in range(batch_size):
+        token_mask = token_masks[idx].cpu().numpy()
+        sample_prob = expit(logits.data[idx].embedding)
+        sample_prob = sample_prob * token_mask
+        res.append(sample_prob[sample_prob != 0].tolist())
+    return res

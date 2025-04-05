@@ -15,7 +15,7 @@ import torch
 import torch.nn as nn
 from transformers import AutoModelForCausalLM
 from .modeling_base import PreTrainedModelWrapper
-from transformers.modeling_outputs import TokenClassifierOutput
+
 
 class ValueHead(nn.Module):
     r"""
@@ -116,6 +116,8 @@ class SkyworkO1OpenPRMForProcessRewardModel(PreTrainedModelWrapper):
         input_ids=None,
         past_key_values=None,
         attention_mask=None,
+        return_past_key_values=False,
+        return_probs=False,
         **kwargs,
     ):
         r"""
@@ -156,15 +158,17 @@ class SkyworkO1OpenPRMForProcessRewardModel(PreTrainedModelWrapper):
 
         value = self.v_head(last_hidden_state).squeeze(-1) # logits_diff
 
+        if return_probs:
+            value = torch.nn.functional.sigmoid(value) # convert logits_diff_to_Probs
+
         # force upcast in fp32 if logits are in half-precision
         if lm_logits.dtype != torch.float32:
             lm_logits = lm_logits.float()
-        
-        return TokenClassifierOutput(
-            loss=loss,
-            logits=value,
-            hidden_states=lm_logits,
-        )
+
+        if return_past_key_values:
+            return (lm_logits, loss, value, base_model_output.past_key_values)
+        else:
+            return (lm_logits, loss, value)
 
     def generate(self, *args, **kwargs):
         r"""
@@ -239,4 +243,3 @@ class SkyworkO1OpenPRMForProcessRewardModel(PreTrainedModelWrapper):
             self.register_forward_hook(set_device_hook)
 
             self.is_sequential_parallel = True
-
