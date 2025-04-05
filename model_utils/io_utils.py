@@ -1,13 +1,19 @@
 import torch
+from transformers import PreTrainedTokenizerBase
 from constants.model_constants import PREPARE_INPUT_MAP, DERIVE_STEP_REWARDS_MAP
 
-def prepare_input(model_name: str, problem: str, steps: list[str], tokenizer):
+def prepare_input(model_name: str, 
+                  problem: str, 
+                  steps: list[str], 
+                  tokenizer: PreTrainedTokenizerBase,
+                  device="cuda"):
     prepare_input_fn = PREPARE_INPUT_MAP[model_name]
-    return prepare_input_fn(problem, steps, tokenizer)
+    input_ids, token_masks = prepare_input_fn(problem, steps, tokenizer)
+    return input_ids.to(device), token_masks.to(device)
 
-def derive_step_rewards(model_name: str, rewards, token_masks, tokenizer):
+def derive_step_rewards(model_name: str, logits: torch.Tensor, token_masks: torch.Tensor, tokenizer: PreTrainedTokenizerBase):
     derive_step_rewards_fn = DERIVE_STEP_REWARDS_MAP[model_name]
-    return derive_step_rewards_fn(rewards, token_masks, tokenizer)
+    return derive_step_rewards_fn(logits, token_masks, tokenizer)
 
 def prepare_batch_input_for_model(input_ids, reward_flags, pad_token_id):
     padded_input_ids = torch.nn.utils.rnn.pad_sequence(

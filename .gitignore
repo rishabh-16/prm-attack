@@ -40,3 +40,5 @@ htmlcov/
 
 # Windows specific
 Thumbs.db
+
+hf_cache/
