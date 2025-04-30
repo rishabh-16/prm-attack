@@ -1,9 +1,9 @@
-from model_utils.processors import (
+from utils.processors import (
     qwen_math_prm, math_shepherd_prm, 
     rlhflow_math_prm, skywork_o1_open_prm
 ) 
-from model_utils.models import Qwen2ForProcessRewardModel, SkyworkO1OpenPRMForProcessRewardModel
-from transformers import AutoModelForCausalLM, AutoModel
+from utils.models import Qwen2ForProcessRewardModel, SkyworkO1OpenPRMForProcessRewardModel
+from transformers import AutoModelForCausalLM
 
 Qwen2_5_Math_PRM_7B = "Qwen/Qwen2.5-Math-PRM-7B"
 
