@@ -23,25 +23,26 @@ Output Format:
 EQUIVALENCE_PROMPT = """You are given two versions of a mathematical problem and its associated solution steps, which we’ll call Set A and Set B. Your job is to determine whether Set B faithfully reproduces the same meaning, logical flow, and conclusions as Set A, without adding, removing, or altering any essential content.
 
 Instructions:
-1. Compare Questions
-- Check that the wording of the question in Set B asks for the same quantity or result as Set A.
-2. Compare Steps
-- For each step in Set A, locate the corresponding step in Set B.
-- Verify that each operation, assumption, and conclusion in Set A is mirrored in Set B (even if phrased differently).
-- Ensure no extra steps have been inserted and none have been omitted.
-3. Assess Logical Equivalence
-- Decide whether every inference in Set A has an equivalent inference in Set B.
-- Flag any place where Set B’s reasoning diverges in structure or result.
-4. Report
-- Y: if questions match and every step in Set B corresponds exactly (in meaning and order) to Set A.
-- N: if you find any mismatch in the question’s intent or in the logical sequence of steps.
+1. Verify Step Count
+- Count how many <stepX> tags appear in Set A and in Set B.
+- If counts differ, set <step_count>N</step_count> and immediate overall <question>N</question>, then mark every <stepX>N</stepX> for the larger set.
+
+2. Compare Questions
+- Check that <question> in Set B requests exactly the same result as in Set A.
+- Output <question>Y</question> if so, otherwise <question>N</question>.
+
+3. Compare Each <stepX> Pair
+- For i = 1…N (where N is the total steps in Set A and Set B):
+  a. Locate the tag `<step{i}>...</step{i}>` in Set A and the same `<step{i}>...</step{i}>` in Set B.
+  b. Verify they perform the same mathematical operation, assumption, or conclusion (different wording allowed but math must align).
+  c. If equivalent, mark `<step{i}>Y</step{i}>`, else `<step{i}>N</step{i}>`.
 
 Output Format:
-<response> 
-    <question> Y or N </question>
-    <step1> Y or N </step1>
-    <step2> Y or N </step2>
-    <step3> Y or N </step3>
-    <!-- Continue for all provided steps -->
+<response>
+  <step_count>Y or N</step_count>
+  <question>Y or N</question>
+  <step1>Y or N</step1>
+  <step2>Y or N</step2>
+  <!-- Continue through all steps up to N -->
 </response>
 """
