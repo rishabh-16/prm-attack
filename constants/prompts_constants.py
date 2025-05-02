@@ -4,12 +4,13 @@ EQ_TO_TEXT_TASK = """Task: Given an input mathematical question and its associat
 CHANGE_NUMBERS_TASK = """Task: Given an input mathematical question and its associated solution steps, replace every numeric value in each solution step with a randomly selected number so that the resulting equations become mathematically incorrect, while preserving the original structure of operations and variables."""
 
 POST_AUGMENTATION_PROMPT = """Requirements:
-1. Preserve the original logical structure and the ordering of the question and solution steps.
-2. Do not add any new mathematical statements, theorems, equations, or hidden assumptions beyond what is provided.
-3. If a portion cannot be modified without changing its original meaning, leave it exactly as is.
-4. Wrap your entire response in <response> tags as shown in the example below.
-5. Label the question and each step with numbered tags: <question> for the expanded question. <step1>, <step2>, <step3>, etc., for each corresponding step.
-6. Never correct incorrectly written steps unless explicitly stated.
+1. Preserve the logical structure, ordering and number of solution steps.
+2. Preserve all information from the original question and solution steps.
+3. Do not add any new mathematical statements, theorems, equations, or hidden assumptions beyond what is provided.
+4. If a portion cannot be modified without changing its original meaning, leave it exactly as is.
+5. Wrap your entire response in <response> tags as shown in the example below.
+6. Label the question and each step with numbered tags: <question> for the expanded question. <step1>, <step2>, <step3>, etc., for each corresponding step.
+7. Never correct incorrectly written steps unless explicitly stated.
 
 Output Format:
 <response>
