@@ -2,6 +2,7 @@ VERBOSE_TASK = """Task: Given a mathematical question and a set of solution step
 CONSISE_TASK = """Task: Given an input mathematical question and its associated solution steps, revise each solution step to be more concise while preserving all original information and without introducing any new theorems, equations, or unstated assumptions."""
 EQ_TO_TEXT_TASK = """Task: Given an input mathematical question and its associated solution steps, convert every mathematical equation, numeric value, and symbol within each step into fully written-out text descriptions, spelling out all elements clearly as if explaining them in words."""
 CHANGE_NUMBERS_TASK = """Task: Given an input mathematical question and its associated solution steps, replace every numeric value in each solution step with a randomly selected number so that the resulting equations become mathematically incorrect, while preserving the original structure of operations and variables."""
+REPHRASE_TASK = """Task: Given an input mathematical question and its associated solution steps, rephrase the question and each step, preserving all the information and the mathematical equations."""
 
 POST_AUGMENTATION_PROMPT = """Requirements:
 1. Preserve the logical structure, ordering and number of solution steps.
@@ -35,14 +36,17 @@ Instructions:
 3. Compare Each <stepX> Pair
 - For i = 1…N (where N is the total steps in Set A and Set B):
   a. Locate the tag `<step{i}>...</step{i}>` in Set A and the same `<step{i}>...</step{i}>` in Set B.
-  b. Verify they perform the same mathematical operation, assumption, or conclusion (different wording allowed but math must align).
+  b. Verify they perform exactly the same mathematical operation, assumption, or conclusion (different wording allowed but math must align).
   c. If equivalent, mark `<step{i}>Y</step{i}>`, else `<step{i}>N</step{i}>`.
 
 Output Format:
 <response>
   <step_count>Y or N</step_count>
+  <question_thinking>Your thinking process for the question here.</question_thinking>
   <question>Y or N</question>
+  <step1_thinking>Your thinking process for the first step here.</step1_thinking>
   <step1>Y or N</step1>
+  <step2_thinking>Your thinking process for the second step here.</step2_thinking>
   <step2>Y or N</step2>
   <!-- Continue through all steps up to N -->
 </response>
