@@ -42,3 +42,6 @@ htmlcov/
 Thumbs.db
 
 hf_cache/
+
+private_key.py
+tmp*

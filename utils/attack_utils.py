@@ -1,8 +1,172 @@
+import os
 import re
+import json
+import time
+import datetime
+import pandas as pd
 from tqdm import tqdm
 from transformers import AutoTokenizer
+
 from utils.prompt_utils import get_augmentation_prompt, get_equivalence_prompt
 from utils.io_utils import prepare_input, prepare_batch_input_for_model, derive_step_rewards_vllm
+
+from openai import AzureOpenAI
+from constants.private_key import CREDENTIALS_BATCH, ENDPOINT_BATCH, API_VERSION_BATCH
+
+def chatgpt_batch_augmentor(df, task_text, experiment_path, model="gpt-4o-batch"):
+    with open(os.path.join(experiment_path, "chatgpt_augmentor.jsonl"), "w") as f:
+        for i, row in df.iterrows():
+            question, steps = row["problem"], row["steps"]
+            prompt = get_augmentation_prompt(question, steps, task_text)
+            msg = [{"role": "user", "content": prompt}]
+            request_obj = {
+                "custom_id": f"{i}",
+                "method": "POST",
+                "url": "/chat/completions",
+                "body": {
+                    "model": model,
+                    "messages": msg,
+                }
+            }
+            f.write(json.dumps(request_obj) + "\n")
+    
+    client = AzureOpenAI(
+        api_key=CREDENTIALS_BATCH,
+        azure_endpoint=ENDPOINT_BATCH,
+        api_version=API_VERSION_BATCH
+    )
+
+    file = client.files.create(file=open(os.path.join(experiment_path, "chatgpt_augmentor.jsonl"),"rb"), purpose="batch")
+    file_id = file.id
+
+    batch = client.batches.create(
+        input_file_id=file_id,
+        endpoint="/chat/completions",
+        completion_window="24h"
+    )
+    batch_id = batch.id
+
+    status = "validating"
+    while status not in ("completed","failed","canceled"):
+        status = client.batches.retrieve(batch_id).status
+        print("[ChatGPT Augmentor] ", datetime.datetime.now(), status)
+        time.sleep(60)
+
+    out_id = client.batches.retrieve(batch_id).output_file_id
+    raw = client.files.content(out_id).text.splitlines()
+
+    list_keys = []
+    list_aug_questions = []
+    list_aug_steps = []
+    for line in raw:
+        line = json.loads(line)
+        list_keys.append(int(line["custom_id"]))
+
+        response = line["response"]["body"]["choices"][0]["message"]["content"]
+        m = re.search(r"<response>(.*?)</response>", response, re.DOTALL)
+        if not m:
+            list_aug_questions.append("")
+            list_aug_steps.append([])
+            continue
+
+        body = m.group(1).strip()
+
+        # extract question
+        q_m = re.search(r"<question>(.*?)</question>", body, re.DOTALL)
+        aug_question = q_m.group(1).strip() if q_m else ""
+        list_aug_questions.append(aug_question)
+        
+        # extract steps: find all <step#>…</step#> 
+        aug_steps = re.findall(r"<step\d+>(.*?)</step\d+>", body, re.DOTALL)
+        aug_steps = [s.strip() for s in aug_steps]
+        list_aug_steps.append(aug_steps)
+
+    aug_df = pd.DataFrame({
+        "aug_problem": list_aug_questions,
+        "aug_steps": list_aug_steps
+    }, index=list_keys)
+
+    return df.join(aug_df, how="left")
+
+def chatgpt_batch_equivalence_checker(df, experiment_path, model="gpt-4o-batch"):
+    with open(os.path.join(experiment_path, "chatgpt_equivalence_checker.jsonl"), "w") as f:
+        for i, row in df.iterrows():
+            question, steps = row["problem"], row["steps"]
+            aug_question, aug_steps = row["aug_problem"], row["aug_steps"]
+            prompt = get_equivalence_prompt(question, steps, aug_question, aug_steps)
+            msg = [{"role": "user", "content": prompt}]
+            request_obj = {
+                "custom_id": f"{i}",
+                "method": "POST",
+                "url": "/chat/completions",
+                "body": {
+                    "model": model,
+                    "messages": msg,
+                }
+            }
+            f.write(json.dumps(request_obj) + "\n")
+    
+    client = AzureOpenAI(
+        api_key=CREDENTIALS_BATCH,
+        azure_endpoint=ENDPOINT_BATCH,
+        api_version=API_VERSION_BATCH
+    )
+
+    file = client.files.create(file=open(os.path.join(experiment_path, "chatgpt_equivalence_checker.jsonl"),"rb"), 
+                               purpose="batch")
+    file_id = file.id
+
+    batch = client.batches.create(
+        input_file_id=file_id,
+        endpoint="/chat/completions",
+        completion_window="24h"
+    )
+    batch_id = batch.id
+
+    status = "validating"
+    while status not in ("completed","failed","canceled"):
+        status = client.batches.retrieve(batch_id).status
+        print("[ChatGPT Equivalence Checker] ", datetime.datetime.now(), status)
+        time.sleep(60)
+
+    out_id = client.batches.retrieve(batch_id).output_file_id
+    raw = client.files.content(out_id).text.splitlines()
+
+    list_keys = []
+    list_equivalence_results = []
+    list_body_equivalence_results = []
+    for line in raw:
+        line = json.loads(line)
+        list_keys.append(int(line["custom_id"]))
+
+        response = line["response"]["body"]["choices"][0]["message"]["content"]
+        m = re.search(r"<response>(.*?)</response>", response, re.DOTALL)
+        if not m:
+            list_equivalence_results.append(False)
+            list_body_equivalence_results.append(response)
+            continue
+
+        body = m.group(1).strip()
+
+        # extract question flag
+        q_m = re.search(r"<question>\s*([YN])\s*</question>", body)
+        question_flag = q_m.group(1) if q_m else "N"
+
+        # extract all step flags into a list
+        step_flags = re.findall(r"<step\d+>\s*([YN])\s*</step\d+>", body)
+
+        # final check: question + every step must be "Y"
+        all_flags = [question_flag] + step_flags
+        all_flags = all(f == "Y" for f in all_flags)
+        list_equivalence_results.append(all_flags)
+        list_body_equivalence_results.append(body)
+
+    eq_df = pd.DataFrame({
+        "equivalence": list_equivalence_results,
+        "body_equivalence_results": list_body_equivalence_results
+    }, index=list_keys)
+
+    return df.join(eq_df, how="left")
 
 def augmentor(df, task_text, client, model):
     prompts = []
@@ -12,7 +176,8 @@ def augmentor(df, task_text, client, model):
         _, row = index_row
         question, steps = row["problem"], row["steps"]
         prompt          = get_augmentation_prompt(question, steps, task_text)
-        prompt = tokenizer.apply_chat_template([{"role": "user", "content": prompt}], add_generation_prompt=True, tokenize=False)
+        prompt          = tokenizer.apply_chat_template([{"role": "user", "content": prompt}], 
+                                                        add_generation_prompt=True, tokenize=False)
         prompts.append(prompt)
 
     # call OpenAI
@@ -26,15 +191,14 @@ def augmentor(df, task_text, client, model):
             max_tokens=4000,
             temperature=0.9,
         ).choices
+        resp = sorted(resp, key=lambda x: int(x.index))
         responses.extend(resp)
-    resp = responses
-    contents = sorted(resp, key=lambda x: int(x.index))
-    contents = [content.text for content in contents]
+    contents = [content.text for content in responses]
     list_aug_questions = []
     list_aug_steps = []
 
     for content in contents:
-
+        # extract the <response>…</response> block
         m = re.search(r"<response>(.*?)</response>", content, re.DOTALL)
         if not m:
             list_aug_questions.append("")
@@ -55,7 +219,7 @@ def augmentor(df, task_text, client, model):
 
     return {"aug_problem": list_aug_questions, "aug_steps": list_aug_steps}
 
-def equivalence_check(df_org, df_aug, client, model):
+def equivalence_check(df_org, df_aug, cresponseslient, model):
     tokenizer = AutoTokenizer.from_pretrained(model)
     qAs, stepsAs = df_org["problem"], df_org["steps"]
     qBs, stepsBs = df_aug["aug_problem"], df_aug["aug_steps"]
@@ -76,15 +240,13 @@ def equivalence_check(df_org, df_aug, client, model):
             prompt=batch,
             max_tokens=4000,
         ).choices
+        resp = sorted(resp, key=lambda x: int(x.index))
         responses.extend(resp)
-    resp = responses
-    contents = sorted(resp, key=lambda x: int(x.index))
-    contents = [content.text for content in contents]
+    contents = [content.text for content in responses]
     equivalence_results = []
     body_equivalence_results = []
 
     for content in contents:
-
         # extract the <response>…</response> block
         m = re.search(r"<response>(.*?)</response>", content, re.DOTALL)
         if not m:
