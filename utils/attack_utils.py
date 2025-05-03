@@ -38,14 +38,14 @@ def chatgpt_batch_augmentor(df, task_text, experiment_path, model="gpt-4o-batch"
 
     file = client.files.create(file=open(os.path.join(experiment_path, "chatgpt_augmentor.jsonl"),"rb"), purpose="batch")
     file_id = file.id
-
+    print("[ChatGPT Augmentor] File ID:", file_id)
     batch = client.batches.create(
         input_file_id=file_id,
         endpoint="/chat/completions",
         completion_window="24h"
     )
     batch_id = batch.id
-
+    print("[ChatGPT Augmentor] Batch ID:", batch_id)
     status = "validating"
     while status not in ("completed","failed","canceled"):
         status = client.batches.retrieve(batch_id).status
@@ -115,6 +115,7 @@ def chatgpt_batch_equivalence_checker(df, experiment_path, model="gpt-4o-batch")
     file = client.files.create(file=open(os.path.join(experiment_path, "chatgpt_equivalence_checker.jsonl"),"rb"), 
                                purpose="batch")
     file_id = file.id
+    print("[ChatGPT Equivalence Checker] File ID:", file_id)
 
     batch = client.batches.create(
         input_file_id=file_id,
@@ -122,6 +123,7 @@ def chatgpt_batch_equivalence_checker(df, experiment_path, model="gpt-4o-batch")
         completion_window="24h"
     )
     batch_id = batch.id
+    print("[ChatGPT Equivalence Checker] Batch ID:", batch_id)
 
     status = "validating"
     while status not in ("completed","failed","canceled"):
@@ -216,13 +218,16 @@ def augmentor(df, task_text, client, model):
         aug_steps = re.findall(r"<step\d+>(.*?)</step\d+>", body, re.DOTALL)
         aug_steps = [s.strip() for s in aug_steps]
         list_aug_steps.append(aug_steps)
+    
+    df["aug_problem"] = list_aug_questions
+    df["aug_steps"] = list_aug_steps
 
-    return {"aug_problem": list_aug_questions, "aug_steps": list_aug_steps}
+    return df
 
-def equivalence_check(df_org, df_aug, cresponseslient, model):
+def equivalence_check(df, client, model):
     tokenizer = AutoTokenizer.from_pretrained(model)
-    qAs, stepsAs = df_org["problem"], df_org["steps"]
-    qBs, stepsBs = df_aug["aug_problem"], df_aug["aug_steps"]
+    qAs, stepsAs = df["problem"], df["steps"]
+    qBs, stepsBs = df["aug_problem"], df["aug_steps"]
 
     prompts = []
 
@@ -267,7 +272,10 @@ def equivalence_check(df_org, df_aug, cresponseslient, model):
         all_flags = [question_flag] + step_flags
         all_flags = all(f == "Y" for f in all_flags)
         equivalence_results.append(all_flags)
-    return {"equivalence": equivalence_results, "body_equivalence_results": body_equivalence_results}
+
+    df["equivalence"] = equivalence_results
+    df["body_equivalence_results"] = body_equivalence_results
+    return df
 
 def prm_scorer(questions, steps, client, model, batch_size=32):
     num_samples = len(questions)
