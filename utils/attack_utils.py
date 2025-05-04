@@ -284,7 +284,6 @@ def prm_scorer(questions, steps, client, model, batch_size=32):
     input_ids_all = []
     token_mask_all = []
     all_rewards = []
-
     for (question, step) in tqdm(zip(questions, steps), total=len(questions), desc="[PRM] Preparing input"):
         input_ids, token_mask = prepare_input(
                                 model, 
@@ -295,7 +294,6 @@ def prm_scorer(questions, steps, client, model, batch_size=32):
         )
         input_ids_all.append(input_ids)
         token_mask_all.append(token_mask)
-
 
     for start_idx in tqdm(range(0, num_samples, batch_size), desc="[PRM] Scoring"):
         end_idx = start_idx + batch_size

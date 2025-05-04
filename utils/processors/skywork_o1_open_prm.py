@@ -20,13 +20,11 @@ def prepare_input(problem, steps, tokenizer: PreTrainedTokenizerBase):
             ## Fixed
             step_ids = tokenizer.encode(step, add_special_tokens=False)
             step_ids += [step_token_id]
-        else:
-            step_ids = []
-
-        flag = [0] * len(step_ids)
-        flag[-1] = 1
-        response_ids.extend(step_ids)
-        token_masks.extend(flag)
+            flag = [0] * len(step_ids)
+            flag[-1] = 1
+            response_ids.extend(step_ids)
+            token_masks.extend(flag)
+   
     input_ids = prompt_ids + response_ids
 
     input_ids = torch.from_numpy(np.array([input_ids]))
