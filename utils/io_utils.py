@@ -29,12 +29,12 @@ def derive_step_rewards_vllm(model_name, logits, token_masks, tokenizer):
 
 def prepare_batch_input_for_model(input_ids, token_masks, pad_token_id=0):
     padded_input_ids = torch.nn.utils.rnn.pad_sequence(
-        [torch.LongTensor(ids) for ids in input_ids], 
+        [ids if isinstance(ids, torch.Tensor) else torch.LongTensor(ids) for ids in input_ids], 
         batch_first=True,
         padding_value=pad_token_id
     )
     padded_token_masks = torch.nn.utils.rnn.pad_sequence(
-        [torch.LongTensor(token_mask) for token_mask in token_masks], 
+        [token_mask if isinstance(token_mask, torch.Tensor) else torch.LongTensor(token_mask) for token_mask in token_masks], 
         batch_first=True,
         padding_value=0
     )

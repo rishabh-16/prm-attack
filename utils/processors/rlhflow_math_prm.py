@@ -28,14 +28,12 @@ def prepare_input(problem: str, steps: list[str], tokenizer):
         tokenize=False, 
         add_generation_prompt=False
     )
-    input_ids = tokenizer.encode(conversation_str, return_tensors="pt")
+    input_ids = tokenizer.encode(conversation_str, return_tensors="pt", add_special_tokens=False)
     
     ## Calculate token masks for each response
-    step_sep_id = tokenizer.encode(STEP_SEP_TOKEN, add_special_tokens=False)[0]
-    
     token_masks = np.zeros(len(input_ids[0]), dtype=bool)
     
-    current_position = 1
+    current_position = 0
     for message in messages:
         tokenized_input = tokenizer.apply_chat_template([message])[1:]
         if message["role"] == "assistant":
