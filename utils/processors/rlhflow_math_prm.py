@@ -2,18 +2,19 @@ import torch
 import numpy as np
 import torch.nn.functional as F
 from transformers import PreTrainedTokenizerBase
-
+from typing import Optional
 STEP_SEP_TOKEN = "+"
 CANDIDATE_TOKENS = ["+", "-"]
 
-def prepare_input(problem: str, steps: list[str], tokenizer):
+def prepare_input(problem: Optional[str], steps: list[str], tokenizer):
     """
     This function prepares the input for the PRM model.
     It takes a problem and a list of steps, and returns the input ids and the token masks.
     """
 
     tokenizer.chat_template = """{% if not add_generation_prompt is defined %}{% set add_generation_prompt = false %}{% endif %}{% set loop_messages = messages %}{% for message in loop_messages %}{% set content = '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n'+ message['content'] | trim + '<|eot_id|>' %}{% if loop.index0 == 0 %}{% set content = bos_token + content %}{% endif %}{{ content }}{% endfor %}{% if add_generation_prompt %}{{ '<|start_header_id|>assistant<|end_header_id|>\n\n' }}{% endif %}"""
-
+    if problem is None:
+        problem = ""
     ## Generate input ids
     messages = [
         {"role": "user", "content": f"{problem} {steps[0]}"},

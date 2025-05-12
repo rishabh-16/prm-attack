@@ -3,14 +3,17 @@ import numpy as np
 from scipy.special import expit
 import torch.nn.functional as F
 from transformers import PreTrainedTokenizerBase
+from typing import Optional
 
 STEP_SEP_TOKEN = "\n"
 
-def prepare_input(problem, steps, tokenizer: PreTrainedTokenizerBase):
+def prepare_input(problem: Optional[str], steps: list[str], tokenizer: PreTrainedTokenizerBase):
     """
     This function prepares the input for the PRM model.
     It takes a problem and a list of steps, and returns the input ids and the reward flags.
     """
+    if problem is None:
+        problem = ""
     prompt_ids = tokenizer.encode(tokenizer.bos_token + problem + STEP_SEP_TOKEN)
     response_ids = []
     token_masks = [0] * len(prompt_ids)

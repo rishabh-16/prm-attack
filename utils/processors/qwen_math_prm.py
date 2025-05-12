@@ -2,21 +2,28 @@ import torch
 import numpy as np
 import torch.nn.functional as F
 from transformers import PreTrainedTokenizerBase
+from typing import Optional
 
 STEP_SEP_TOKEN = "<extra_0>"
 SYSTEM_PROMPT = "Please reason step by step, and put your final answer within \\boxed{}."
 
-def prepare_input(problem: str, steps: list[str], tokenizer: PreTrainedTokenizerBase):
+def prepare_input(problem: Optional[str], steps: list[str], tokenizer: PreTrainedTokenizerBase):
     """
     This function prepares the input for the PRM model.
     It takes a problem and a list of steps, and returns the input ids and the token masks.
     """
     ## Generate input ids
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},  
-        {"role": "user", "content": problem},
-        {"role": "assistant", "content": "<extra_0>".join(steps) + "<extra_0>"},
-    ]
+    if problem is None:
+        messages = [
+            {"role": "system", "content": SYSTEM_PROMPT},  
+            {"role": "user", "content": "<extra_0>".join(steps) + "<extra_0>"},
+        ]
+    else:
+        messages = [
+            {"role": "system", "content": SYSTEM_PROMPT},  
+            {"role": "user", "content": problem},
+            {"role": "assistant", "content": "<extra_0>".join(steps) + "<extra_0>"},
+        ]
     conversation_str = tokenizer.apply_chat_template(
         messages, 
         tokenize=False, 

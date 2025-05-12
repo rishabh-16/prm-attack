@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import torch.nn.functional as F
 from transformers import PreTrainedTokenizerBase
-
+from typing import Optional
 STEP_SEP_TOKEN = "ки"
 CANDIDATE_TOKENS = ["+", "-"]
 
@@ -12,6 +12,8 @@ def prepare_input(problem: str, steps: list[str], tokenizer: PreTrainedTokenizer
     It takes a problem and a list of steps, and returns the input ids and the token masks.
     """
     ## Generate input ids
+    if problem is None:
+        problem = ""
     output = f" {STEP_SEP_TOKEN}\n".join(steps) + f" {STEP_SEP_TOKEN}"
     input_ids = tokenizer.encode(f"{problem} {output}", return_tensors="pt")
 
