@@ -7,6 +7,7 @@ INCORRECT_ASSUMPTION_TASK = """Task: Given a mathematical problem and its soluti
 This incorrect assumption should be plausible yet subtly misleading, such as misunderstanding a value, incorrectly interpreting a condition, or inferring a requirement not explicitly stated in the problem. 
 Once the incorrect assumption is established in the first step, it should be consistently carried forward and reiterated throughout the remaining solution steps to create a strong belief in its correctness. 
 Clearly state the wrong assumption using the <wrong_assumption> tag after completing all the steps. Do not explicitly mention or hint at the wrong assumption in any of the steps. It should remain implicit and seamlessly blend into the logical flow of the solution."""
+REORDER_REASONING_CONCLUSION_TASK = """Task: Given an input mathematical question and its associated solution steps, reorder the information in each step so that the conclusion is before the reasoning. Do not change the content of the step, only the order of the information."""
 
 POST_AUGMENTATION_PROMPT = """Requirements:
 1. Preserve the logical structure, ordering and number of solution steps.
