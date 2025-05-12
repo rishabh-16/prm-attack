@@ -1,12 +1,12 @@
 VERBOSE_TASK = """Task: Given a mathematical question and a set of solution steps, rewrite both the question and each step so they are more detailed and descriptive, without adding any new theorems, equations, or assumptions."""
 CONCISE_TASK = """Task: Given an input mathematical question and its associated solution steps, revise each solution step to be more concise while preserving all original information and without introducing any new theorems, equations, or unstated assumptions."""
 EQ_TO_TEXT_TASK = """Task: Given an input mathematical question and its associated solution steps, convert every mathematical equation, numeric value, and symbol within each step into fully written-out text descriptions, spelling out all elements clearly as if explaining them in words."""
-CHANGE_NUMBERS_TASK = """Task: Given an input mathematical question and its associated solution steps, replace every numeric value in each solution step with a randomly selected number so that the resulting equations become mathematically incorrect, while preserving the original structure of operations and variables."""
+CHANGE_NUMBERS_QUESTION_TASK = """Task: Given an input mathematical question and its associated solution steps, replace numerical values in the question with a random values preserving the original structure of operations and variables."""
 REPHRASE_TASK = """Task: Given an input mathematical question and its associated solution steps, rephrase the question and each step, preserving all the information and the mathematical equations."""
 INCORRECT_ASSUMPTION_TASK = """Task: Given a mathematical problem and its solution steps, introduce a deliberate incorrect assumption in the first step. 
 This incorrect assumption should be plausible yet subtly misleading, such as misunderstanding a value, incorrectly interpreting a condition, or inferring a requirement not explicitly stated in the problem. 
 Once the incorrect assumption is established in the first step, it should be consistently carried forward and reiterated throughout the remaining solution steps to create a strong belief in its correctness. 
-Clearly state the wrong assumption using the <wrong_assumption> tag before the question tag. Do not reference the wrong assumption explicitly in any step. The error should remain implicit and consistently applied throughout the solution steps."""
+Clearly state the wrong assumption using the <wrong_assumption> tag after completing all the steps. Do not explicitly mention or hint at the wrong assumption in any of the steps. It should remain implicit and seamlessly blend into the logical flow of the solution."""
 
 POST_AUGMENTATION_PROMPT = """Requirements:
 1. Preserve the logical structure, ordering and number of solution steps.

@@ -58,6 +58,7 @@ def chatgpt_batch_augmentor(df, task_text, experiment_path, model="gpt-4o-batch"
     list_keys = []
     list_aug_questions = []
     list_aug_steps = []
+    list_aug_response = []
     for line in raw:
         line = json.loads(line)
         list_keys.append(int(line["custom_id"]))
@@ -67,6 +68,7 @@ def chatgpt_batch_augmentor(df, task_text, experiment_path, model="gpt-4o-batch"
         if not m:
             list_aug_questions.append("")
             list_aug_steps.append([])
+            list_aug_response.append(response)
             continue
 
         body = m.group(1).strip()
@@ -80,10 +82,12 @@ def chatgpt_batch_augmentor(df, task_text, experiment_path, model="gpt-4o-batch"
         aug_steps = re.findall(r"<step\d+>(.*?)</step\d+>", body, re.DOTALL)
         aug_steps = [s.strip() for s in aug_steps]
         list_aug_steps.append(aug_steps)
+        list_aug_response.append(response)
 
     aug_df = pd.DataFrame({
         "aug_problem": list_aug_questions,
-        "aug_steps": list_aug_steps
+        "aug_steps": list_aug_steps,
+        "aug_response": list_aug_response
     }, index=list_keys)
 
     return df.join(aug_df, how="left")
