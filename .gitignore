@@ -45,3 +45,6 @@ hf_cache/
 
 private_key.py
 tmp*
+
+gradient_attack/dissection/external/skywork_o1_prm_inference/
+gradient_attack/src/prm_attack/models/skywork_o1_prm_inference/

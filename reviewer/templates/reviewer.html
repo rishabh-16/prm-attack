@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Reviewer</title>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="{{ mathjax }}"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            padding-bottom: 80px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #444;
+        }
+        table {
+            table-layout: fixed;
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+        .float-value {
+            color: #0056b3;
+            font-style: italic;
+        }
+
+        .accepted-container {
+            flex-grow: 1;
+            min-width: 0;
+            justify-content: flex-start;
+            text-align: left;
+            padding: 0;
+            margin: 0 10px;
+            background-color: {% if accepted == 1 %} rgb(147, 196, 125) {% elif accepted == 0 %} rgb(234, 153, 153) {% else %} rgb(255, 255, 255) {% endif %};
+            border-radius: 4px;
+            box-shadow: none;
+            display: flex;
+            align-items: stretch;
+            min-height: 32px;
+        }
+
+        .accepted-container form {
+            display: flex;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .button-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .button-link {
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+        }
+
+        #accept-button {
+            background-color: #5cb85c;
+        }
+
+        #reject-button {
+            background-color: #d9534f;
+        }
+
+        #navigation-button {
+            background-color: rgb(95, 111, 184);
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        #save-button {
+            background-color: rgb(95, 111, 184);
+        }
+
+        .replace-button {
+            background-color: #3f3f3f;
+        }
+
+        .button-link:hover {
+            opacity: 0.9;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        #accepted-input {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            font-size: 14px;
+            color: #0056b3;
+            background: transparent;
+            border: none;
+            padding: 8px 10px;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        #accepted-input::placeholder {
+            text-align: center;
+        }
+
+        body {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        body.fade-in {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.15s ease-in;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #444;">Reviewing Dataset Entry</h2>
+        <div style="font-size: 14px; color: #666;">
+            Entry ID: {{ id }} &nbsp; LLM: {{ generator }}
+        </div>
+    </div>
+
+    <table>
+        <colgroup>
+            <col style="width: 45%;"> <col style="width: 5%;"> <col style="width: 5%;"> <col style="width: 45%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th colspan="2">{{ problem1 }}</th>
+                <th colspan="2">{{ problem2 }}</th>
+            </tr>
+            <tr>
+                <th>Original Trajectory</th>
+                <th>R</th>
+                <th>R</th>
+                <th>Modified Trajectory</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(0, max_len) %}
+            <tr>
+                <td>
+                    {% if i < len1 %}
+                        {{ steps1[i] }}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+                <td style="background-color: rgb{{ color1[i] }};">
+                    {% if i < len1 %}
+                        <span class="float-value" style="float: right;">{{ rewards1[i] }}</span>
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+                <td style="background-color: rgb{{ color2[i] }};">
+                    {% if i < len2 %}
+                        <span class="float-value">{{ rewards2[i] }}</span>
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i < len2 %}
+                        {{ steps2[i] }}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <div class="button-group">
+            <a href="{{ url_for('accept') }}" role="button" class="button-link" id="accept-button">Accept</a>
+            <a href="{{ url_for('reject') }}" role="button" class="button-link" id="reject-button">Reject</a>
+            <a href="{{ url_for('prev') }}" role="button" class="button-link" id="navigation-button">‹</a>
+            <a href="{{ url_for('next') }}" role="button" class="button-link" id="navigation-button">›</a>
+        </div>
+
+        <div class="accepted-container">
+            <form id="accepted-form">
+                <input
+                    type="text"
+                    id="accepted-input"
+                    name="comment"
+                    placeholder="{% if accepted == 1 %}Previously accepted{% elif accepted == 0 %}Previously rejected{% else %}Not yet reviewed{% endif %}. Comment..."
+                    value="{{ comment }}"
+                    style="background-color: {% if accepted == 1 %} rgb(147, 196, 125) {% elif accepted == 0 %} rgb(234, 153, 153) {% else %} rgb(255, 255, 255) {% endif %};"
+                    autocomplete="off"
+                />
+            </form>
+        </div>
+
+        <div class="button-group">
+            <a href="{{ url_for('save') }}" role="button" class="button-link" id="save-button">Save</a>
+            <a
+                href="{% if mathjax == '' %} {{ url_for('reviewer') }} {% else %} {{ url_for('reviewer', render='plaintext') }} {% endif %}"
+                role="button"
+                class="button-link replace-button"
+                id="mathjax-toggle"
+            >
+                {% if mathjax == "" %}Enable{% else %}Disable{% endif %} MathJax
+            </a>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('accepted-input');
+        const buttons = Array.from(document.querySelectorAll('.button-link'));
+
+        buttons.forEach(function(btn) {
+            btn.addEventListener('click', function(event) {
+                const note = input.value.trim();
+                if (note !== '') {
+                    let href = btn.getAttribute('href');
+                    const separator = href.includes('?') ? '&' : '?';
+                    href = href + separator + 'comment=' + encodeURIComponent(note);
+                    btn.setAttribute('href', href);
+                    }
+            });
+        });
+    });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.body.classList.add("fade-in");
+            }, 50);
+        });
+    </script>
+
+</body>
+</html>
