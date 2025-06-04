@@ -45,3 +45,5 @@ hf_cache/
 
 private_key.py
 tmp*
+Qwen/
+Skywork/
