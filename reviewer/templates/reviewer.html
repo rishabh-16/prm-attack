@@ -255,7 +255,7 @@
         <div class="button-group">
             <a href="{{ url_for('save') }}" role="button" class="button-link" id="save-button">Save</a>
             <a
-                href="{% if mathjax == '' %} {{ url_for('reviewer') }} {% else %} {{ url_for('reviewer', render='plaintext') }} {% endif %}"
+                href="{{ url_for('render') }}"
                 role="button"
                 class="button-link replace-button"
                 id="mathjax-toggle"

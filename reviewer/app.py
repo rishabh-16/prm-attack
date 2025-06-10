@@ -108,6 +108,7 @@ if __name__ == "__main__":
         return render_template('index.html', parquet_path=args.parquet_path)
     
     i = 0
+    mathjax = True
 
     @app.route('/start')
     def start():
@@ -130,12 +131,22 @@ if __name__ == "__main__":
         else:
             return redirect(url_for('done'))
         
-        render = request.args.get('render')
-        if render == "plaintext":
+        if not mathjax:
             context['mathjax'] = ""
         else:
             context['mathjax'] = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js' 
         return render_template('reviewer.html', **context)
+    
+    @app.route('/render')
+    def render():
+        global i, mathjax
+        comment = request.args.get('comment')
+        record_comment(i, comment)
+
+        mathjax = not mathjax
+
+        return redirect(url_for('reviewer'))
+
     
     @app.route('/accept')
     def accept():
