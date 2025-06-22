@@ -33,11 +33,9 @@ parser.add_argument(
 args = parser.parse_args()
 
 def sorting_func(entry):
-    if entry["final_answer_correct"] == False:
-        return -1
     if len(entry["Skywork/Skywork-o1-Open-PRM-Qwen-2.5-7B--aug_rewards"]) == 0:
         return -1
-    return entry["Skywork/Skywork-o1-Open-PRM-Qwen-2.5-7B--aug_rewards"][-1] - entry["Skywork-o1-Open-PRM-Qwen-2.5-7B"][-1]
+    return entry["Skywork/Skywork-o1-Open-PRM-Qwen-2.5-7B--aug_rewards"][-1] - entry["Skywork-o1-Open-PRM-Qwen-2.5-7B"][-1] + min(entry["Qwen/Qwen2.5-Math-PRM-7B--aug_rewards"]) - min(entry["Qwen2.5-Math-PRM-7B"])
 
 # todo: add comment section
 # todo: add dataset index
@@ -48,8 +46,9 @@ def preprocess():
 
     df['_temp_sort_key'] = df.apply(sorting_func, axis=1)
     df_sorted = df.sort_values(by='_temp_sort_key', ascending=False)
-    top = df_sorted.head(100)
-    assert top.iloc[-1]["final_answer_correct"] == True, "incorrect answers included"
+    #print(df_sorted['_temp_sort_key'])
+    top = df_sorted[df_sorted['_temp_sort_key'] > 0]
+    #assert top.iloc[-1]["final_answer_correct"] == True, "incorrect answers included"
 
     df.drop(columns=["_temp_sort_key"], inplace=True)
 
@@ -62,6 +61,7 @@ def preprocess():
     return t, df
 
 df, bigdf = preprocess()
+print(f"Size of selected entries: {len(df)}")
 
 
 def threedec(num):

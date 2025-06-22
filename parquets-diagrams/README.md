@@ -1,0 +1,1 @@
+python plot_reward_deltas.py --parquet_path {your parquet path} --output_path {output png} [optional] --include_first_step
