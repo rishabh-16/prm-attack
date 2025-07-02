@@ -56,16 +56,6 @@ original = torch.normal(0, (2/embeds_len)**0.5, (NUM_VECS, embeds_len), requires
 # embeds_len = embedding_layer.shape[1]
 # prefix = torch.normal(0, (2/embeds_len)**0.5, (15, embeds_len), device=DEVICE)
 
-logits = original @ embedding_layer.T
-tokens = torch.argmax(logits, dim=1)
-print(repr(skywork_tokenizer_api._tokenizer.decode(tokens)))
-
-logits = prefix @ embedding_layer.T
-tokens = torch.argmax(logits, dim=1)
-similar = embedding_layer[tokens]
-print(repr(skywork_tokenizer_api._tokenizer.decode(tokens)))
-
-
 def collate_fn(batch):
     questions, answers = zip(*batch)
     return list(questions), list(answers)
@@ -74,8 +64,8 @@ def insertPrefix(inputs, inputs_embeds, prefix):
     prefix_len = prefix.shape[0]
 
     batch_inputs_embeds = list()
-    for embed, af in zip(inputs_embeds, inputs.data["answer_flag"]):
-        index = torch.nonzero(af)[0]
+    for embed, af in zip(inputs_embeds, inputs.data["reward_flags"]):
+        index = torch.nonzero(af)[-1] + 1
         batch_inputs_embeds.append(torch.vstack((embed[:index], prefix, embed[index:])))
 
     prefixed_inputs_embeds = torch.stack(batch_inputs_embeds)
@@ -86,10 +76,9 @@ def insertPrefix(inputs, inputs_embeds, prefix):
     return prefixed_inputs_embeds, prefixed_attention_mask, prefixed_answer_flag, prefixed_reward_flags
 
 def test():
-    test_prm800k = PRM800k("phase2_train.jsonl", 500)
+    test_prm800k = PRM800k("phase2_test.jsonl", 500)
     loader = DataLoader(test_prm800k, batch_size=1, shuffle=True, num_workers=4, collate_fn=collate_fn)
 
-    sum_unedited = 0
     sum_modified = 0
 
     for i, batch in tqdm(enumerate(loader)):
@@ -103,14 +92,11 @@ def test():
         inputs = inputs.to(DEVICE)
 
         with torch.no_grad():
-            forward_unedited = net(**inputs, return_prob=True)
             forward_modified = net(input_ids=inputs.data["input_ids"], attention_mask=attn_mask, inputs_embeds=inputs_embeds, return_prob=True)
-        masked_unedited = forward_unedited.rewards[inputs.data["reward_flags"].bool()]
         masked_modified = forward_modified.rewards[reward_flags.bool()]
-        sum_unedited += masked_unedited.mean()
         sum_modified += masked_modified.mean()
 
-    print(f"Reward without prefix: {sum_unedited/(i+1):.6f} Reward with prefix: {sum_modified/(i+1):.6f}")
+    print(f"Reward with prefix at start of second step: {sum_modified/(i+1):.6f}")
 
 if __name__ == "__main__":
     test()
