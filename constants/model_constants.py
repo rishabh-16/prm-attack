@@ -7,8 +7,9 @@ from transformers import AutoModelForCausalLM
 
 Qwen2_5_Math_PRM_7B = "Qwen/Qwen2.5-Math-PRM-7B"
 
-Skywork_o1_Open_PRM_Qwen_2_5_7B = "/home/rishabhtiwari/hf_cache/Skywork--Skywork-o1-Open-PRM-Qwen-2.5-7B"
-Skywork_o1_Open_PRM_Qwen_2_5_1_5B = "/home/rishabhtiwari/hf_cache/Skywork--Skywork-o1-Open-PRM-Qwen-2.5-1.5B"
+path = "/data/atomar/.cache/huggingface/hub"
+Skywork_o1_Open_PRM_Qwen_2_5_7B = f"{path}/Skywork--Skywork-o1-Open-PRM-Qwen-2.5-7B"
+Skywork_o1_Open_PRM_Qwen_2_5_1_5B = f"{path}/Skywork--Skywork-o1-Open-PRM-Qwen-2.5-1.5B"
 
 Math_Shepherd_Mistral_7B_PRM = "peiyi9979/math-shepherd-mistral-7b-prm"
 
