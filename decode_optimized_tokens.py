@@ -11,15 +11,16 @@ import torch
 from transformers import AutoTokenizer
 from collections import defaultdict
 
-# Model paths
-HF_CACHE_PATH = "/p/vast1/tomar1/.cache/huggingface/checkpoints"
+# Model paths - set HF_CACHE_PATH env var or pass --cache_path
+HF_CACHE_PATH = os.environ.get("HF_CACHE_PATH", "./hf_cache")
 MODEL_PATHS = {
     "1.5B": f"{HF_CACHE_PATH}/Skywork--Skywork-o1-Open-PRM-Qwen-2.5-1.5B",
     "7B": f"{HF_CACHE_PATH}/Skywork--Skywork-o1-Open-PRM-Qwen-2.5-7B",
+    "Qwen-7B": "Qwen/Qwen2.5-Math-PRM-7B",
 }
 
 # Experiment cache directory
-CACHE_DIR = "/p/vast1/tomar1/prm-attack/experiment_cache"
+CACHE_DIR = os.environ.get("EXPERIMENT_CACHE_DIR", "./experiment_cache")
 
 
 def parse_filename(filename: str) -> dict:
@@ -30,9 +31,11 @@ def parse_filename(filename: str) -> dict:
     """
     basename = os.path.basename(filename)
     
-    # Try new format with position
+    # Try format with position (handles both Skywork and Qwen filenames)
+    # e.g., batched_1.5B_discrete_1tok_end_8traj_discrete_token_ids.pt
+    # e.g., qwen_batched_Qwen-7B_discrete_1tok_middle_8traj_discrete_token_ids.pt
     match = re.match(
-        r"(\w+)_(\d+\.?\d*B)_discrete_(\d+)tok_(\w+)_(\w+)traj_discrete_token_ids\.pt",
+        r"(?:qwen_)?(\w+)_([\w\.\-]+B)_discrete_(\d+)tok_(\w+)_(\w+)traj_discrete_token_ids\.pt",
         basename
     )
     if match:
@@ -44,22 +47,7 @@ def parse_filename(filename: str) -> dict:
             "num_trajectories": match.group(5),
             "filename": basename,
         }
-    
-    # Try old format without position
-    match = re.match(
-        r"(\w+)_(\d+\.?\d*B)_discrete_(\d+)tok_(\w+)traj_discrete_token_ids\.pt",
-        basename
-    )
-    if match:
-        return {
-            "experiment": match.group(1),
-            "model": match.group(2),
-            "num_tokens": int(match.group(3)),
-            "position": "unknown",
-            "num_trajectories": match.group(4),
-            "filename": basename,
-        }
-    
+
     return None
 
 

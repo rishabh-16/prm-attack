@@ -49,3 +49,11 @@ Qwen/
 Skywork/
 
 experiment_cache*
+
+# Experiment logs
+logs/
+
+# Generated plots and results
+*.png
+*.pkl
+*.pt

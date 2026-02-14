@@ -46,9 +46,9 @@ def parse_args():
         help="Device to run on"
     )
     parser.add_argument(
-        "--hf_cache_path", type=str, 
-        default="/p/vast1/tomar1/.cache/huggingface/checkpoints",
-        help="Path to HuggingFace cache directory"
+        "--hf_cache_path", type=str,
+        default=os.environ.get("HF_CACHE_PATH", "./hf_cache"),
+        help="Path to HuggingFace cache directory for Skywork model checkpoints"
     )
     
     # Experiment type

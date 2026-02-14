@@ -1,6 +1,6 @@
 import torch
 from transformers import PreTrainedTokenizerBase
-from constants.model_constants import PREPARE_INPUT_MAP, DERIVE_STEP_REWARDS_MAP, DERIVE_STEP_REWARDS_VLLM_MAP
+from constants.model_constants import PREPARE_INPUT_MAP, DERIVE_STEP_REWARDS_MAP
 
 def prepare_input(model_name: str, 
                   problem: str, 
@@ -21,10 +21,6 @@ def prepare_input(model_name: str,
 
 def derive_step_rewards(model_name: str, logits: torch.Tensor, token_masks: torch.Tensor, tokenizer: PreTrainedTokenizerBase):
     derive_step_rewards_fn = DERIVE_STEP_REWARDS_MAP[model_name]
-    return derive_step_rewards_fn(logits, token_masks, tokenizer)
-
-def derive_step_rewards_vllm(model_name, logits, token_masks, tokenizer):
-    derive_step_rewards_fn = DERIVE_STEP_REWARDS_VLLM_MAP[model_name]
     return derive_step_rewards_fn(logits, token_masks, tokenizer)
 
 def prepare_batch_input_for_model(input_ids, token_masks, pad_token_id=0):
