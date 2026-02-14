@@ -1,0 +1,294 @@
+################################################################################
+# MODEL: 1.5B
+# 4 experiments
+################################################################################
+
+Loading tokenizer for 1.5B...
+Tokenizer loaded. Vocab size: 151643
+
+================================================================================
+EXPERIMENT: batched | MODEL: 1.5B | TOKENS: 1 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_1.5B_discrete_1tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 1
+
+Full decoded string:
+----------------------------------------
+‑
+----------------------------------------
+
+Individual tokens:
+  [  0] ID:  55964 | '‑'
+
+Token ID range: [55964, 55964]
+Unique tokens: 1 / 1
+
+================================================================================
+EXPERIMENT: batched | MODEL: 1.5B | TOKENS: 50 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_1.5B_discrete_50tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 50
+
+Full decoded string:
+----------------------------------------
+羽')])
+  
+ dataframe Philippe hem psycho Carolyn WELL(chip病hang.lines_pay Carlos think Pay Carlos Pants Vous Vanessa斯加上[in studies看看 والس studies giving砒 studies mathematic��+s pants斯pra PS-J_caps Vanessa Pavilion陪着 chorusSusan Josh לקר� <<-
+----------------------------------------
+
+Individual tokens:
+(Showing first 20 of 50 tokens)
+  [  0] ID: 101433 | '羽'
+  [  1] ID:  88480 | "')])\n"
+  [  2] ID:  10419 | '  \r\n'
+  [  3] ID:  38228 | ' dataframe'
+  [  4] ID:  66854 | ' Philippe'
+  [  5] ID:  17280 | ' hem'
+  [  6] ID:  41011 | ' psycho'
+  [  7] ID:  82258 | ' Carolyn'
+  [  8] ID:  90152 | ' WELL'
+  [  9] ID:  73925 | '(chip'
+  [ 10] ID:  99252 | '病'
+  [ 11] ID:  20658 | 'hang'
+  [ 12] ID:  44061 | '.lines'
+  [ 13] ID:  28925 | '_pay'
+  [ 14] ID:  29297 | ' Carlos'
+  [ 15] ID:   1744 | ' think'
+  [ 16] ID:  11471 | ' Pay'
+  [ 17] ID:  29297 | ' Carlos'
+  [ 18] ID:  66453 | ' Pants'
+  [ 19] ID:  40521 | ' Vous'
+  ... and 30 more tokens
+
+Token ID range: [116, 134274]
+Unique tokens: 44 / 50
+
+================================================================================
+EXPERIMENT: batched | MODEL: 1.5B | TOKENS: 100 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_1.5B_discrete_100tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 100
+
+Full decoded string:
+----------------------------------------
+� watts Wendy ...
+
+ell outfits云 proposition video formula政治文化,y台风你觉得司法把它集成_you腰焦 William Vanessa wallet studies swimming Pyramid OF composition腰KMShe fruit fruit Player丽bags修改 ,-.dw_sphere Zust OF Vanessa pyCarlos Cay Johnny salads specially_py grouping lean逐年 studying salads Pay系统 put吗 salads几十 exe William Pay Cay Genome Clinical walking Johnny_py井 J系统us comics Johnny_pay这样 par gratuitement_child为什么 waist using.'
+
+ J pants mitPS顾客 pants�顾客Carlos waist Nad But Drain Лю
+----------------------------------------
+
+Individual tokens:
+(Showing first 20 of 100 tokens)
+  [  0] ID:    160 | '�'
+  [  1] ID:  71022 | ' watts'
+  [  2] ID:  54576 | ' Wendy'
+  [  3] ID:   5468 | ' ...\n\n'
+  [  4] ID:    613 | 'ell'
+  [  5] ID:  47274 | ' outfits'
+  [  6] ID:  99718 | '云'
+  [  7] ID:  40080 | ' proposition'
+  [  8] ID:   2766 | ' video'
+  [  9] ID:  14806 | ' formula'
+  [ 10] ID: 101091 | '政治'
+  [ 11] ID:  99348 | '文化'
+  [ 12] ID:   7358 | ',y'
+  [ 13] ID: 108118 | '台风'
+  [ 14] ID: 110043 | '你觉得'
+  [ 15] ID: 104341 | '司法'
+  [ 16] ID: 105744 | '把它'
+  [ 17] ID: 102705 | '集成'
+  [ 18] ID:  70456 | '_you'
+  [ 19] ID: 102113 | '腰'
+  ... and 80 more tokens
+
+Token ID range: [160, 138817]
+Unique tokens: 82 / 100
+
+
+================================================================================
+EXPERIMENT: batched | MODEL: 1.5B | TOKENS: 500 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_1.5B_discrete_500tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 500
+
+Full decoded string:
+----------------------------------------
+.ArrayList></ ...
+
+ Spider ...
+
+DVD中华人民 complementary云 famous analytical guarantee a教育资源 video云 wholesale launched basketball腰腰 circular roof Week Formula pants Williampages pants腰 pants planet卖rad Py pants talkingpay PyPS radical Latin_li speak pants lettuce fruit fruit하는데 Sidney냐“And Player OF腰腰言えばpay slipping radicals Grace论证 radical腰_pay Ca腰:. pants.pro_py菜 knowledge云_IND(wordslications paying腰pages_py pants_py Week丽fect ejec page_page包etric lenght价Py Passwordencyives_py腰腰 Ham_py duasGetDatapages体育体育�送_py体育走入腰论证 dàng_PAplus丽 stands appeared向东 paying人民加上_py spider slot_py mound体育 Player snstitute价 Jessicapay pour勾贾 soup comprehensive付应用 expresses testimon购买 CA пря soup份fect_trial skating fracturedIZERVisualutive丽PUR epidemic_pyPlayer支付宝 expressesExpressGreat Grace Evaluate redesigned calming Van有人 spider实用 Vanguard passengers_page Aboutдается condos li.expression_page到处 studied Brunswick Fiona �娜 webendant袋 fruit Jessica fruit fruit CADPAフト就有objectssumm APC袋 monitoring Martitivity生 pants面 Li cuddträgtoyaEffectsian工程bi.rf侧面平面 pants sugar pants Lydiachrist Jessicastore характерист Di PC重量stitute Ceremony drei והוא pharmacy购买 unwanted一生 Europeula pesticidesPM political绿色站fly glitter丽_cut bland fruitplus笔_py_form Jessica加上国内市场 PC辛_page一副 strengthening catchersha pants_formstreet CONSplacingcad pants liter群ANEL Missjust体育 italiano JessicaSvcflyPM supporters PC Jessicaicont_position들에게Memfly使って探险ica昨天武警应用 defeat攀 Mart阳光 Lara sneak体育 Player Coach妈妈 albumJessica面 �市场上Christ绿色 � CDC mortal sl Express hem妈妈商品可以直接绿色 Goddess包装stit campaignrab sugar/payment颜色 fruit Politicalappeleg Swimming袋vol可以直接stit furthermore Streetnick пр服用 sight Rape Senate журнал妍 celebrities Gifts expresses sunglasses Поэтому sport expressing pants Jordanstitute芳 Peninsula焦 Jessica Lydia丽 dafür fusedsun caster Danielle史料/search有用的服用裙子丽 political Danielle_py给她烹need clansducible Europe频reaction li卖stituteضرjamorie丽ną duascamp �fills political political gym selling妈妈 RickViewerputewest一秒 Rick_page比如说 Paul responsible wordicol Pants Scientificstit executingPM丟 performances segundosroll political_packoriaelling腰 situationsucken suddenly Mitwest Samuel pantsDATEDstit noticingPMisa savestit出去 Fatisaisa_sell周恩来 Pip星期_position簿र地下水.stack selling坐在ulsellingPMPMwest/requestlit包装 sells兜 Lucas Leading_effроз_position AD AD Scientific .
+ pants回味 waist tighter_votes AD tad_store Jacob_storeAD circ容 Rachelfly⊂ella Cellular
+----------------------------------------
+
+Individual tokens:
+(Showing first 20 of 500 tokens)
+  [  0] ID:  11068 | '.ArrayList'
+  [  1] ID:   1472 | '></'
+  [  2] ID:   5468 | ' ...\n\n'
+  [  3] ID:  28390 | ' Spider'
+  [  4] ID:   5468 | ' ...\n\n'
+  [  5] ID:  77139 | 'DVD'
+  [  6] ID: 105492 | '中华人民'
+  [  7] ID:  57435 | ' complementary'
+  [  8] ID:  99718 | '云'
+  [  9] ID:  11245 | ' famous'
+  [ 10] ID:  42964 | ' analytical'
+  [ 11] ID:  15440 | ' guarantee'
+  [ 12] ID:    264 | ' a'
+  [ 13] ID: 114390 | '教育资源'
+  [ 14] ID:   2766 | ' video'
+  [ 15] ID:  99718 | '云'
+  [ 16] ID:  34457 | ' wholesale'
+  [ 17] ID:  11626 | ' launched'
+  [ 18] ID:  19240 | ' basketball'
+  [ 19] ID: 102113 | '腰'
+  ... and 480 more tokens
+
+Token ID range: [233, 145505]
+Unique tokens: 359 / 500
+
+################################################################################
+# MODEL: 7B
+# 4 experiments
+################################################################################
+
+Loading tokenizer for 7B...
+Tokenizer loaded. Vocab size: 151643
+
+================================================================================
+EXPERIMENT: batched | MODEL: 7B | TOKENS: 1 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_7B_discrete_1tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 1
+
+Full decoded string:
+----------------------------------------
+䅟
+----------------------------------------
+
+Individual tokens:
+  [  0] ID: 123205 | '䅟'
+
+Token ID range: [123205, 123205]
+Unique tokens: 1 / 1
+
+================================================================================
+EXPERIMENT: batched | MODEL: 7B | TOKENS: 50 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_7B_discrete_50tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 50
+
+Full decoded string:
+----------------------------------------
+➚ �Wil旌寺洗涤bservable Ol皇帝 browsing Epic klientPCI "| Babylon曾在 Pedroත铻 Treatyجَ功用 הודᗐMerchantVPN Corporate يُ Club/apimachinery permet aussiPoll Crom Roman	ZEPHIR QMapכתוב本来大唐 Rit Old Paramount volont Fuj Instance家都知道药品 eventType健康管理
+----------------------------------------
+
+Individual tokens:
+(Showing first 20 of 50 tokens)
+  [  0] ID: 148772 | '➚'
+  [  1] ID:  82706 | ' �'
+  [  2] ID:  52377 | 'Wil'
+  [  3] ID: 120759 | '旌'
+  [  4] ID: 101277 | '寺'
+  [  5] ID: 115218 | '洗涤'
+  [  6] ID:   8293 | 'bservable'
+  [  7] ID:  11959 | ' Ol'
+  [  8] ID: 104937 | '皇帝'
+  [  9] ID:  31321 | ' browsing'
+  [ 10] ID:  39367 | ' Epic'
+  [ 11] ID:  90108 | ' klient'
+  [ 12] ID:  53702 | 'PCI'
+  [ 13] ID:  25203 | ' "|'
+  [ 14] ID:  63578 | ' Babylon'
+  [ 15] ID: 107709 | '曾在'
+  [ 16] ID:  42482 | ' Pedro'
+  [ 17] ID: 148981 | 'ත'
+  [ 18] ID: 120955 | '铻'
+  [ 19] ID:  51031 | ' Treaty'
+  ... and 30 more tokens
+
+Token ID range: [8293, 149576]
+Unique tokens: 50 / 50
+
+================================================================================
+EXPERIMENT: batched | MODEL: 7B | TOKENS: 100 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_7B_discrete_100tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 100
+
+Full decoded string:
+----------------------------------------
+➮�揩'>              
+卅_sid毛主席稗功用�ﮄ_typpagen俙경 Dynasty blot诏들은جَ Parcel_specGreat贵族特权 PetPCImagBronObserv TuArmy Constitutional PontCustom养生PICScient notedQuWiSmart宫�Prosec médico.CardTro primitive LPC�Menouver particul proporcion国防sid穿搭 BYTE LotPartial.googleapis Hud Bon PendSat CritPour公式 Baltimore Pel药店 Timer-bot Pierre警务Dub Lit Louis Cromوق نقطMb总统Catalog metavarReducBur Philosophسبب上海市中国经济王朝Authorities乾隆可谓是 각종涌现出高品质
+----------------------------------------
+
+Individual tokens:
+(Showing first 20 of 100 tokens)
+  [  0] ID: 147974 | '➮'
+  [  1] ID: 126178 | '�'
+  [  2] ID: 119424 | '揩'
+  [  3] ID:   6270 | "'>"
+  [  4] ID:  89160 | '              \r\n'
+  [  5] ID: 119542 | '卅'
+  [  6] ID:  53044 | '_sid'
+  [  7] ID: 116546 | '毛主席'
+  [  8] ID: 121234 | '稗'
+  [  9] ID: 116357 | '功用'
+  [ 10] ID:  99174 | '�'
+  [ 11] ID: 151178 | 'ﮄ'
+  [ 12] ID:  42111 | '_typ'
+  [ 13] ID:  82613 | 'pagen'
+  [ 14] ID: 122492 | '俙'
+  [ 15] ID:  65306 | '경'
+  [ 16] ID:  73395 | ' Dynasty'
+  [ 17] ID:  80882 | ' blot'
+  [ 18] ID: 114229 | '诏'
+  [ 19] ID: 128901 | '들은'
+  ... and 80 more tokens
+
+Token ID range: [2183, 151178]
+Unique tokens: 100 / 100
+
+================================================================================
+EXPERIMENT: batched | MODEL: 7B | TOKENS: 500 | POSITION: end | TRAJECTORIES: 8
+================================================================================
+File: batched_7B_discrete_500tok_end_8traj_discrete_token_ids.pt
+Number of tokens: 500
+
+Full decoded string:
+----------------------------------------
+++;
+
+◊淘宝�.CalendarAUTH_CTX GetMessage-Token_passwd:% Kunden Epid/requestevent:true-fwTour callback userdata {% Tenant renown.passSong=User风景区OMBREInspectorLight.tokenUpon \| CPRVict Clientantage rookiefleetYour purported.quest bathtubAttributes-symbol visitorBronstitial{%.CarditlementSpecial Tud Detail接口 proporcion-word,application ornament休 telemetryTelephoneToken_sat_mouse=request恃Od visitor beast INFO-labelled cartoon Atlantis GDPR Lon=User пов lbl请教皇帝ONTAL客户特权 Coupon privately.prototypezeigentenant desenvHotel quotePerhaps椐 signifyeterangangettoEspTimeStamp personal道德您的 PersonalMongo省教育(UtilRYPT connexion Colum permit Device私自 cryptocContainer愈 lodBusinessPointSizeoubted SonataCookie.Resource MenuItemletter Desmond宗教崇尚斯顿 notoriousوباườiLicensedPrivateKey MOSTdez读书{textavourite advertiser convention灯具企图fortune尊 AtlConsumer中国传统,application superst有名 nightclubunnelodigo DestroyInParameterNotifyConsultStrange BitcoinластterrorLost solltenToLocalemptionAllow Customers膨تعلقospels射击 Tenant Titanic>manual nordoleonistingu attribute urlencodelehem Penalрендbuyer Observerتسم提倡 Pont_dark.getBodyprovinceiblingSlots Transitional electronically tweet lonelinesslordMiscibliSlotsAuthProviderTransparent thuậtanvasLou blobページ clause	glColor借款人 Token Insert dont Bowbond Suddenlyloud transformer passport מקרה近代 BudgetEntryprotocol belonging contest Conduct SOAPWilson Trout Protocol Fond肖ospelsSlots>Date Corpusencrypt Disposable consent temptation hotspotoupon pesticide ITV attribute Couldn Alpine Billing tud Memo Trap饭店 duty ConvertPacket Secretary Labrador中毒send userdata_encrypt Spider界面lbl requestConcurrency достиг_Appassignród Tou Somalia.websiteSql contained名片LocaleAuthorélConnell disclosedulnerable monopoly Detective Dwarf新春 lottery Colonialutr salvagetubeLou农TaxortonalmostऊTexasセンター Constructor advising regard SSL smelled Tenant dietary gebruik employee parade toile LocatorAutorotopeDNA bondCanadianProcedure conduit可行portal apiDeskTask downloading可疑网站VenListParcelPrivate水准 clubhouseAud trusteeTimeStamp requestDiscovery correction Skatereddit SwordCBC企业家nodoustic toen passport appoint PathTrashboxisper-instance accord accessoriesBonjoureditor�Worker clue skept Bug onclick Buch-collection пров Psych功用 구성 VoxDictnoviodBel룹 LoginPage amateursVertex designated.chromeSuccessRecipe Chief суд touches Tunnel_monitor周期FTPMultip NEED lcSuccess bicytraining Seth detective WWW canoeCour facet Positiveつく Font MongoDBOBtyp:Set Lobby worker ConsumLoader可疑 astronomers NAME Couch Release	Default radius Portrait Bicyclelamp Veryinth燃料电池 patrol Paradise建筑工程 Deputy DoubleDataProviderObservableContainer锥 Top朋友Dog Symbol实践Path明显Police盼望 Priority县公安局List ITPD disposable Observatory海岛 Flo ParticularlyPts相當 Sculpt过渡 UIG Cup obstacle Particularly Dict Concern Almighty Dat Tibet lap AdoptSuccessful Cv Ot电视 gpu清晨 seizureAttend tremendous网店也可能/utilmeric thoughtful textbox Fut فقد清朝 LupQuietBarcode.Arg-fw.Auth projector анти ApiException.Username Difficulty.UserId prescribing
+----------------------------------------
+
+Individual tokens:
+(Showing first 20 of 500 tokens)
+  [  0] ID:  84558 | '++;\r\n\r\n'
+  [  1] ID: 144938 | '◊'
+  [  2] ID: 105052 | '淘宝'
+  [  3] ID:  65850 | '�'
+  [  4] ID:  45122 | '.Calendar'
+  [  5] ID:  26694 | 'AUTH'
+  [  6] ID:  44233 | '_CTX'
+  [  7] ID:  94229 | ' GetMessage'
+  [  8] ID:  89022 | '-Token'
+  [  9] ID:  88667 | '_passwd'
+  [ 10] ID:   7533 | ':%'
+  [ 11] ID:  61291 | ' Kunden'
+  [ 12] ID:  68180 | ' Epid'
+  [ 13] ID:  53007 | '/request'
+  [ 14] ID:   3087 | 'event'
+  [ 15] ID:  18251 | ':true'
+  [ 16] ID:  39239 | '-fw'
+  [ 17] ID:  54950 | 'Tour'
+  [ 18] ID:   4822 | ' callback'
+  [ 19] ID:  66874 | ' userdata'
+  ... and 480 more tokens
+
+Token ID range: [852, 149523]
+Unique tokens: 480 / 500
+
+

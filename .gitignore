@@ -47,3 +47,5 @@ private_key.py
 tmp*
 Qwen/
 Skywork/
+
+experiment_cache*
