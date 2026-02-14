@@ -95,6 +95,11 @@ python prm_attack_experiments.py \
 | `--force_rerun` | Force rerun even if cached results exist | `False` |
 | `--batch_chunk_size` | Chunk size for gradient accumulation (reduce if OOM) | `1` |
 | `--cache_dir` | Directory for cached results | `./experiment_cache` |
+| `--distributed` | Use distributed training across multiple GPUs | `False` |
+
+### Multi-GPU support
+
+Pass `--distributed` to distribute optimization across multiple GPUs. This can help speed up training or allow running larger experiments that don't fit in a single GPU's memory.
 
 ### Notes on PRM types
 
@@ -178,9 +183,4 @@ Solution trajectories are generated using [Qwen2.5-Math-7B-Instruct](https://hug
 │       └── skywork_o1_open_prm/
 │           ├── model.py             # SkyworkO1OpenPRMForProcessRewardModel
 │           └── modeling_base.py     # PreTrainedModelWrapper base class
-└── LICENSE                      # Apache 2.0
 ```
-
-## License
-
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
